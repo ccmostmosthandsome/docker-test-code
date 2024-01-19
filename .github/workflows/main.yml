@@ -29,7 +29,7 @@ jobs:
     - run: pnpm install
     - run: pnpm run build
     - run: tar --ignore-failed-read -zcvf release.tgz --exclude=node_modules  *  
-    - run: echo ${{ secrets.CCTOKENS }}
+    - run: echo ${{ secrets.CODETOKENS }}
     - run: echo ${{ github.ref }}
     - run: echo ${{ github.ref }}
       
@@ -38,7 +38,7 @@ jobs:
       id: create_release
       uses: softprops/action-gh-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.CCTOKENS }}
+        GITHUB_TOKEN: ${{ secrets.CODETOKENS }}
         ACTIONS_STEP_DEBUG: true
       with:
         tag_name: ${{ github.ref }}
