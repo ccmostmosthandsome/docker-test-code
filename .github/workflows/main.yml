@@ -1,0 +1,76 @@
+name: vuepress博客
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    # 下载源码
+    - name: Checkout
+      uses: actions/checkout@master
+
+    
+    # 打包构建
+    - name: Build
+      uses: actions/setup-node@master
+      with:
+        node-version: 21
+
+    - uses: pnpm/action-setup@v2
+      name: Install pnpm
+      with:
+        version: 8
+        run_install: true
+
+    - run: pnpm install
+    - run: pnpm run build
+    - run: tar --ignore-failed-read -zcvf release.tgz  *  --exclude=node_modules
+    - run: echo ${{ secrets.CCTOKENS }}
+    - run: echo ${{ github.ref }}
+    - run: echo ${{ github.ref }}
+      
+    # 发布 Release
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.CCTOKENS }}
+        ACTIONS_STEP_DEBUG: true
+      with:
+        tag_name: ${{ github.ref }}
+        name: Demo ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+        files: |
+          release.tgz
+
+
+    # 上传构建结果到 Release
+    # - name: Upload Release Asset
+    #   id: upload-release-asset
+    #   uses: actions/upload-release-asset@master
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.CCTOKENS }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: ./release.tgz
+    #     asset_name: release.tgz
+    #     asset_content_type: application/x-tgz
+
+    # 部署到服务器
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWOED }}
+        port: ${{ secrets.PORT }}
+        script: |
+          cd /home/dockerTestCode
+          wget https://codeload.github.com/ccmostmosthandsome/docker-test-code
+          /tar.gz/${{ github.ref_name }} -O release.tgz
+          tar zxvf release.tgz
