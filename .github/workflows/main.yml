@@ -65,6 +65,6 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd /home/dockerTestCode
-          wget https://github.com/ccmostmosthandsome/docker-test-code/releases/download/${{ github.ref_name }}/release.tgz -O release.tgz
+          wget https://codeload.github.com/ccmostmosthandsome/docker-test-code/tar.gz/${{ github.ref_name }} -O release.tgz
           tar zxvf release.tgz
           pnpm install 
