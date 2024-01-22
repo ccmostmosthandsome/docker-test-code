@@ -73,5 +73,5 @@ jobs:
           cd /home/dockerTestCode
           wget https://codeload.github.com/ccmostmosthandsome/docker-test-code/tar.gz/${{ github.ref_name }} -O release.tgz
           tar zxvf release.tgz
-          cd /docker-test-code-${{ github.ref_name }}
-          pnpm install
+          cd ~/home/dockerTestCode/docker-test-code-${{ github.ref_name }}
+          docker-compose up --build oss
