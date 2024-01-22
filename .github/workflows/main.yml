@@ -4,8 +4,8 @@ on:
     tags:
       - 'v*'
 
-env:
-  version: $(echo ${{ github.ref_name }} | cut -c 2-)
+# env:
+#   version: $(echo ${{ github.ref_name }} | cut -c 2-)
 
 jobs:
   build-and-deploy:
