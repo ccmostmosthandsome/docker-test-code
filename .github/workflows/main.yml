@@ -4,7 +4,7 @@ on:
     tags:
       - 'v*'
 
-vars:
+env:
   version: ${{ github.ref_name }} | tr -d 'v'
 
 jobs:
@@ -77,5 +77,5 @@ jobs:
           wget https://codeload.github.com/ccmostmosthandsome/docker-test-code/tar.gz/${{ github.ref_name }} -O release.tgz
           tar zxvf release.tgz
         
-    - run: cd ~/home/dockerTestCode/docker-test-code-${{ version }}
+    - run: cd ~/home/dockerTestCode/docker-test-code-${{ env.version }}
     - run: docker-compose up --build oss
