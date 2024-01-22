@@ -35,6 +35,7 @@ jobs:
     - run: echo ${{ secrets.CODETOKENS }}
     - run: echo ${{ github.ref }}
     - run: echo ${{ github.ref }}
+    - run: echo $(echo ${{ github.ref_name }} | cut -c 2-)
       
     # 发布 Release
     - name: Create Release
@@ -75,7 +76,15 @@ jobs:
         script: |
           cd /home/dockerTestCode
           wget https://codeload.github.com/ccmostmosthandsome/docker-test-code/tar.gz/${{ github.ref_name }} -O release.tgz
-          tar zxvf release.tgz
-        
-    - run: cd ~/home/dockerTestCode/docker-test-code-${{ env.version }}
-    - run: docker-compose up --build oss
+          tar zxvf release.tgz --transform 's/old_folder_name/new_folder_name/'
+    
+
+    - name: Trim string example
+      env: 
+        outputDir: $(echo ${{ github.ref_name }} | cut -c 2-)
+      run: |
+        cd ~/home/dockerTestCode/docker-test-code-${{ env.outputDir }}
+        docker-compose up --build oss
+      
+    # - run: cd ~/home/dockerTestCode/docker-test-code-${{ env.version }}
+    # - run: docker-compose up --build oss
