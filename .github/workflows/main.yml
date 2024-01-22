@@ -5,7 +5,7 @@ on:
       - 'v*'
 
 env:
-  version: ${{ github.ref_name }} | tr -d 'v'
+  version: "${{ github.ref_name }} | tr -d 'v'"
 
 jobs:
   build-and-deploy:
