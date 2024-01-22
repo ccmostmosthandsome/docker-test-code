@@ -68,6 +68,8 @@ jobs:
     # 部署到服务器
     - name: Deploy
       uses: appleboy/ssh-action@master
+      env: 
+        outputDir: $(echo ${{ github.ref_name }} | cut -c 2-)
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
@@ -77,13 +79,15 @@ jobs:
           cd /home/dockerTestCode
           wget https://codeload.github.com/ccmostmosthandsome/docker-test-code/tar.gz/${{ github.ref_name }} -O release.tgz
           tar zxvf release.tgz 
+          cd docker-test-code-${{ env.outputDir }}
+          docker-compose up --build oss
 
-    - name: Trim string example
-      env: 
-        outputDir: $(echo ${{ github.ref_name }} | cut -c 2-)
-      run: |
-        cd /home/dockerTestCode/docker-test-code-${{ env.outputDir }}
-        docker-compose up --build oss
+    # - name: Trim string example
+    #   env: 
+    #     outputDir: $(echo ${{ github.ref_name }} | cut -c 2-)
+    #   run: |
+    #     cd /home/dockerTestCode/docker-test-code-${{ env.outputDir }}
+    #     docker-compose up --build oss
       
     # - run: cd ~/home/dockerTestCode/docker-test-code-${{ env.version }}
     # - run: docker-compose up --build oss
