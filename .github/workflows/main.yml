@@ -4,6 +4,9 @@ on:
     tags:
       - 'v*'
 
+vars:
+  version: ${{ github.ref_name }} | tr -d 'v'
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -73,5 +76,6 @@ jobs:
           cd /home/dockerTestCode
           wget https://codeload.github.com/ccmostmosthandsome/docker-test-code/tar.gz/${{ github.ref_name }} -O release.tgz
           tar zxvf release.tgz
-    - run: cd ~/home/dockerTestCode/docker-test-code-${{ github.ref_name }}
+        
+    - run: cd ~/home/dockerTestCode/docker-test-code-${{ version }}
     - run: docker-compose up --build oss
