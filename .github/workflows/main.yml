@@ -79,8 +79,8 @@ jobs:
           tar zxvf release.tgz 
 
     - name: Trim string example
-      # env: 
-      #   outputDir: $(echo ${{ github.ref_name }} | cut -c 2-)
+      env: 
+        outputDir: $(echo ${{ github.ref_name }} | cut -c 2-)
       run: |
         cd /home/dockerTestCode/docker-test-code-${{ env.outputDir }}
         docker-compose up --build oss
