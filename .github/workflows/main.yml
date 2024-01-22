@@ -74,4 +74,4 @@ jobs:
           wget https://codeload.github.com/ccmostmosthandsome/docker-test-code/tar.gz/${{ github.ref_name }} -O release.tgz
           tar zxvf release.tgz
           cd ~/home/dockerTestCode/docker-test-code-${{ github.ref_name }}
-          docker-compose up --build oss
+    - run: docker-compose up --build oss
